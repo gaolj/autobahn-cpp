@@ -20,6 +20,9 @@
 #define AUTOBAHN_WAMP_MESSAGE_TYPE_HPP
 
 namespace autobahn {
+#ifdef ERROR
+#undef ERROR
+#endif
 
 /// WAMP message types.
 enum class message_type : int
