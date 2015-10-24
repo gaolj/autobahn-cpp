@@ -17,10 +17,10 @@ if (PKG_CONFIG_FOUND)
 endif (PKG_CONFIG_FOUND)
 
 find_path(Libmsgpack_INCLUDE_DIR msgpack.hpp
-          HINTS ${PC_LIBMSGPACK_INCLUDEDIR} ${PC_LIBMSGPACK_INCLUDE_DIRS})
+          HINTS ${CMAKE_SOURCE_DIR}/../../Msgpack/msgpack-c/include)
 
 find_library(Libmsgpack_LIBRARY NAMES msgpack
-             HINTS ${PC_MSGPACK_LIBDIR} ${PC_LIBMSGPACK_LIBRARY_DIRS})
+             HINTS ${CMAKE_SOURCE_DIR}/../../Msgpack/msgpack-c/msvc/Debug)
 
 if(Libmsgpack_USE_STATIC_LIBS)
     set(CMAKE_FIND_LIBRARY_SUFFIXES ${_libmsgpack_ORIG_CMAKE_FIND_LIBRARY_SUFFIXES})
