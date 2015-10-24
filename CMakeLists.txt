@@ -21,9 +21,44 @@ set(CMAKE_MODULE_PATH
     ${CMAKE_MODULE_PATH}
     "${CMAKE_SOURCE_DIR}/cmake/Modules/")
 
+if(WIN32)
+    add_definitions(-D_WIN32_WINNT=0x0501)
+endif()
+
+if (MSVC)
+    set (Boost_USE_MULTITHREADED TRUE)
+    set (Boost_USE_STATIC_LIBS TRUE)
+else ()
+    set (Boost_USE_MULTITHREADED FALSE)
+    set (Boost_USE_STATIC_LIBS FALSE)
+endif ()
+
 find_package(Boost REQUIRED COMPONENTS program_options system thread)
 find_package(Libmsgpack REQUIRED)
-find_package(Threads REQUIRED)
+#find_package(Threads REQUIRED)
+
+if (Boost_FOUND)
+    # Boost is a project wide global dependency.
+    include_directories (${Boost_INCLUDE_DIRS})
+    link_directories (${Boost_LIBRARY_DIRS})
+
+    # Pretty print status
+    message (STATUS "-- Include Directories")
+    foreach (include_dir ${Boost_INCLUDE_DIRS})
+        message (STATUS "       " ${include_dir})
+    endforeach ()
+    message (STATUS "-- Library Directories")
+    foreach (library_dir ${Boost_LIBRARY_DIRS})
+        message (STATUS "       " ${library_dir})
+    endforeach ()
+    message (STATUS "-- Libraries")
+    foreach (boost_lib ${Boost_LIBRARIES})
+        message (STATUS "       " ${boost_lib})
+    endforeach ()
+    message ("")
+else ()
+    message (FATAL_ERROR "Failed to find required dependency: boost")
+endif ()
 
 set(PUBLIC_HEADERS
     ${CMAKE_CURRENT_SOURCE_DIR}/autobahn/autobahn.hpp
